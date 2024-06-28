@@ -12,17 +12,15 @@ Original file is located at
 from sklearn.datasets import make_regression
 import matplotlib.pyplot as plt
 import numpy as np
+from sklearn.linear_model import LinearRegression
 
 # randomly generated Data
-X,y = make_regression(n_samples=100,n_features=1,n_informative=1,n_targets=1,noise= 20)
+X, y = make_regression(n_samples=100, n_features=1, n_informative=1, n_targets=1, noise=20)
 
-plt.scatter(X,y)
-
-from sklearn.linear_model import LinearRegression
 
 lr = LinearRegression()
 
-lr.fit(X,y)
+lr.fit(X, y)
 print(lr.coef_)
 print(lr.intercept_)
 
@@ -30,22 +28,24 @@ print(lr.intercept_)
 
 m = 83.48220151
 
+
 class GDRegression:
-  def __init__(self,learning_rate, epochs):
-    self.m = 83.48220151
-    self.b = -120
-    self.lr = learning_rate
-    self.epochs = epochs
+    def __init__(self, learning_rate, epochs):
+        self.m = 83.48220151
+        self.b = -120
+        self.lr = learning_rate
+        self.epochs = epochs
 
-  def fit(self,X,y):
-    # calculate b using Gradient Descent
-    for i in range(self.epochs):
-      loss_slope = -2*np.sum(y- self.m*X.ravel() - self.b)
-      self.b = self.b - (self.lr*loss_slope)
+    def fit(self, X, y):
+        # calculate b using Gradient Descent
+        for i in range(self.epochs):
+            loss_slope = -2 * np.sum(y - self.m * X.ravel() - self.b)
+            self.b = self.b - (self.lr * loss_slope)
 
-    print(self.b)
+        print(self.b)
+
 
 # Adjust the LR and Epochs
-gd = GDRegression(0.006,50)
-gd.fit(X,y)
+gd = GDRegression(0.006, 50)
+gd.fit(X, y)
 
