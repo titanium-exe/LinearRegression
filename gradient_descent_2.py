@@ -13,67 +13,64 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 
-X,y = load_diabetes(return_X_y=True)
+X, y = load_diabetes(return_X_y=True)
 
 print(X.shape)
 print(y.shape)
 
 """X_train should only contain input features"""
 
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.2, random_state = 2)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=2)
 
 reg = LinearRegression()
-reg.fit(X_train,y_train)
+reg.fit(X_train, y_train)
 
 print(reg.coef_)
 
 print(reg.intercept_)
 
 y_pred = reg.predict(X_test)
-r2_score(y_test,y_pred)
+r2_score(y_test, y_pred)
 
 """# This GD is Batch GD for n-Dimensional Data
 
 
 """
 
+
 class GDRegressor:
-  def __init__(self,learning_rate=0.01,epochs=100):
-    self.coef_ = None
-    self.intercept_ = None
-    self.lr = learning_rate
-    self.epochs = epochs
+    def __init__(self, learning_rate=0.01, epochs=100):
+        self.coef_ = None
+        self.intercept_ = None
+        self.lr = learning_rate
+        self.epochs = epochs
 
-  def fit(self,X_train,y_train):
-    # init ur coefficients
-    self.intercept_ = 0    # b0
-    # all the coefficients will be equal to the number of cols
-    # self.coef_ is an array
-    self.coef_ = np.ones(X_train.shape[1])
+    def fit(self, X_train, y_train):
+        # init ur coefficients
+        self.intercept_ = 0  # b0
+        # all the coefficients will be equal to the number of cols
+        # self.coef_ is an array
+        self.coef_ = np.ones(X_train.shape[1])
 
-    for i in range(self.epochs):
-      # update all the intercepts and coefs
-      # calculating y_hat : Vectorization
-      y_hat = np.dot(X_train,self.coef_) + self.intercept_
-      intercept_derivative = -2*np.mean(y_train - y_hat)
-      self.intercept_ = self.intercept_ - (self.lr * intercept_derivative)
-      # getting coef_derivatives (array/matrix) :
-      coef_derivatives= -2*np.dot((y_train-y_hat),X_train)/X_train.shape[0]
-      # now we will update all the coefficients (b0,b1,b2....)
-      self.coef_ = self.coef_ - (self.lr * (coef_derivatives))
-    print(self.intercept_, self.coef_)
+        for i in range(self.epochs):
+            # update all the intercepts and coefs
+            # calculating y_hat : Vectorization
+            y_hat = np.dot(X_train, self.coef_) + self.intercept_
+            intercept_derivative = -2 * np.mean(y_train - y_hat)
+            self.intercept_ = self.intercept_ - (self.lr * intercept_derivative)
+            # getting coef_derivatives (array/matrix) :
+            coef_derivatives = -2 * np.dot((y_train - y_hat), X_train) / X_train.shape[0]
+            # now we will update all the coefficients (b0,b1,b2....)
+            self.coef_ = self.coef_ - (self.lr * (coef_derivatives))
+        print(self.intercept_, self.coef_)
 
-  def predict(self,X_test):
-    return np.dot(X_test,self.coef_) + self.intercept_
+    def predict(self, X_test):
+        return np.dot(X_test, self.coef_) + self.intercept_
 
-X_train.shape
 
-gdr = GDRegressor(epochs=1200,learning_rate=0.37)
+gdr = GDRegressor(epochs=1200, learning_rate=0.37)
 
 gdr.fit(X_train, y_train)
 
 y_pred = gdr.predict(X_test)
-r2_score(y_test,y_pred)
-
-
-
+r2_score(y_test, y_pred)
